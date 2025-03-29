@@ -11,7 +11,7 @@ end
 
 
 function M.get_filepath_project_folder_tabaka()
-  return ('%s/%.s'):format(vim.fn.getcwd(-1,-1), NAME_PROJECT)
+  return ('%s/.%s'):format(vim.fn.getcwd(-1,-1), NAME_PROJECT)
 end
 
 
