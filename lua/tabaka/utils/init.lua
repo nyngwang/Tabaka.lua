@@ -59,6 +59,24 @@ function M.create_window_tabaka()
 end
 
 
+function M.get_or_create_buf(filepath)
+  local bufs_valid = vim.tbl_filter(function (bufnr)
+    return vim.api.nvim_buf_is_valid(bufnr)
+  end, vim.api.nvim_list_bufs())
+
+  for _, bufnr in ipairs(bufs_valid) do
+    if filepath == vim.api.nvim_buf_get_name(bufnr) then
+      return bufnr
+    end
+  end
+  -- have to create the buffer.
+
+  local buf = vim.api.nvim_create_buf(true, false)
+  vim.api.nvim_buf_set_name(buf, filepath)
+  return buf
+end
+
+
 function M.setup_window_tabaka(winid_tabaka)
   if not M.folder_or_file_exist(M.get_filepath_project_folder_tabaka()) then
     print('Tabaka: Failed to find the `.tabaka/` folder.')
@@ -70,8 +88,7 @@ function M.setup_window_tabaka(winid_tabaka)
     M.create_file(M.get_filepath_markdown_tabaka())
   end
   -- open the file.
-  local buf = vim.api.nvim_create_buf(true, false)
-  vim.api.nvim_buf_set_name(buf, M.get_filepath_markdown_tabaka())
+  local buf = M.get_or_create_buf(M.get_filepath_markdown_tabaka())
   vim.api.nvim_win_set_buf(winid_tabaka, buf)
 end
 
