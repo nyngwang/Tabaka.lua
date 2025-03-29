@@ -1,8 +1,3 @@
--- check required folders & files exist for the current project.
--- - ensure .tabaka/ exist under project root.
--- - ensure .tabaka/main.md exist.
---
---
 -- create keymaps for the following user story
 -- - a user can `:tabaka commands strings` to do many things
 -- - a user can toggle the markdown as the leftmost fixed-width window
@@ -26,7 +21,6 @@
 -- create utils to support each user story above
 -- - window creator with the following properties
 --   - be able to open a fixed-width window
---   - be able to move the window as the leftmost split
 --
 local U = require('tabaka.utils')
 local M = {}
