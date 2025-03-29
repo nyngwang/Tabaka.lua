@@ -39,22 +39,31 @@
 --     - scroll the buffer so that the task title with the first few lines of the tabaka window
 --
 --
-local U = require('tabaka.utils')
+local W = require('tabaka.window')
+local A = require('tabaka.autocmds')
+local L = require('tabaka.cmdline')
 local M = {}
+
+
+function M.setup(opts)
+  -- only create autocmds after setup.
+  A.create_autocmds()
+  L.create_user_commands()
+end
 
 
 function M.toggle_window_tabaka()
   if -- already presented in the current tabpage.
-    U.get_window_tabaka()[1]
+    W.get_window_tabaka()[1]
     then -- close it.
     -- TODO: the user might not have auto-save plugin!
-    vim.api.nvim_win_close(U.get_window_tabaka()[2], false)
+    vim.api.nvim_win_close(W.get_window_tabaka()[2], false)
     return
   end
   -- otherwise, we try to open the tabaka window.
-  local ok, winid_tabaka = U.create_window_tabaka()
+  local ok, winid_tabaka = W.create_window_tabaka()
   if not ok then return end
-  U.setup_window_tabaka(winid_tabaka)
+  W.setup_window_tabaka(winid_tabaka)
 end
 
 
