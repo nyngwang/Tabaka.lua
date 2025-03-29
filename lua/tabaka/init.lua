@@ -1,26 +1,43 @@
--- create keymaps for the following user story
--- - a user can `:tabaka commands strings` to do many things
--- - a user can toggle the markdown as the leftmost fixed-width window
--- - (<=) a user can modify the markdown easily
---   - change the task description for the current tabpage
---   - add/del the buffer of the current window
---   - add/del the buffer of the given buffer id
---   - add/del a note-item into the markdown
---     - first prompt the user to enter the location to insert the note-item
---     - second prompt the user to enter the text for the note-item
---   - toggle a note item as done or undone
+-- PLAN:
 --
 --
--- create autocmds for the following user story
--- - when a user is not editing the markdown
---   - show only the part of the markdown for the current tabpage.
--- - when a user is editing the markdown (engage)
---   - show the raw markdown, scrolled to the part for the current tabpage
+-- invariants in tabaka:
+-- - tabaka should not delete any existing section in the markdown implicitly
+-- - tabaka should be able to scroll the markdown correctly for each tabpage, after restoring a session
+--   - note: we always have `tabnr == tabid` for every tabpage after restoring a session
+-- - tabaka should execute a command only-if the tabaka window is open under the current tabpage
 --
 --
--- create utils to support each user story above
--- - window creator with the following properties
---   - be able to open a fixed-width window
+-- tabaka can be customized by the following properties:
+-- - a user can define the width of the tabaka window
+-- - a user can define the position of the tabaka window (left/right/top/down)
+-- - a user can provide a template for the markdown
+--   - a user can define custom rules for a template
+--
+--
+-- create user commands, `:tabaka commands`, for the following use cases:
+-- - toggle the markdown as the very-{top,down,left,right} fixed-{width,height} window
+-- - modify the markdown easily (tabaka<=nvim)
+--   - update the task title of the current tabpage
+--   - update the task description of the current tabpage
+--   - add/del an item in the note list of the current tabpage
+--     - first prompt the user for the index to insert after
+--     - second prompt the user for the note text
+--   - add/del an item in the note list to the "doing"
+--   - add/del an item in the note list to the "done"
+--   - add/del an item in the buffer list of the current tabpage
+--     - use the buffer in the current window
+--     - use the buffer id provided by the user
+--
+--
+-- create autocmds to support the features above:
+-- - tabaka should be able to scroll the markdown correctly for each tabpage, after restoring a session
+--   - when the tabaka window is open under a tabpage
+--     - if section not exist, create one using the default or template provided by the user
+--     - if section exist, scroll the buffer so that the task title with the first few lines of the tabaka window
+--   - when the user move the cursor out of the tabaka window
+--     - scroll the buffer so that the task title with the first few lines of the tabaka window
+--
 --
 local U = require('tabaka.utils')
 local M = {}
