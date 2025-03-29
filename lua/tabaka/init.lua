@@ -1,4 +1,3 @@
-
 -- check required folders & files exist for the current project.
 -- - ensure .tabaka/ exist under project root.
 -- - ensure .tabaka/main.md exist.
@@ -29,9 +28,22 @@
 --   - be able to open a fixed-width window
 --   - be able to move the window as the leftmost split
 --
+local U = require('tabaka.utils')
+local M = {}
 
 
+function M.toggle_window_tabaka()
+  if -- already presented in the current tabpage.
+    U.get_window_tabaka()[1]
+    then -- close it.
+    -- TODO: the user might not have auto-save plugin!
+    vim.api.nvim_win_close(U.get_window_tabaka()[2], false)
+    return
+  end
+  -- otherwise, we open the tabaka window.
+  local wintabaka = U.create_window_tabaka()
+  U.setup_window_tabaka(wintabaka)
+end
 
 
-
-
+return M
