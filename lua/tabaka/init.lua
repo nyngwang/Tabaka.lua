@@ -40,9 +40,10 @@ function M.toggle_window_tabaka()
     vim.api.nvim_win_close(U.get_window_tabaka()[2], false)
     return
   end
-  -- otherwise, we open the tabaka window.
-  local wintabaka = U.create_window_tabaka()
-  U.setup_window_tabaka(wintabaka)
+  -- otherwise, we try to open the tabaka window.
+  local ok, winid_tabaka = U.create_window_tabaka()
+  if not ok then return end
+  U.setup_window_tabaka(winid_tabaka)
 end
 
 

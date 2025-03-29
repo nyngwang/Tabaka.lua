@@ -1,5 +1,5 @@
 local M = {}
-local NAME_PROJECT = 'tabaka'
+local NAME_PROJECT_FOLDER = '.tabaka'
 local NAME_MARKDOWN = 'baka'
 
 
@@ -11,7 +11,7 @@ end
 
 
 function M.get_filepath_project_folder_tabaka()
-  return ('%s/.%s'):format(vim.fn.getcwd(-1,-1), NAME_PROJECT)
+  return ('%s/%s'):format(vim.fn.getcwd(-1,-1), NAME_PROJECT_FOLDER)
 end
 
 
@@ -45,6 +45,11 @@ end
 
 
 function M.create_window_tabaka()
+  if not M.folder_or_file_exist(M.get_filepath_project_folder_tabaka()) then
+    print(('Tabaka: Failed to find the `%s/` folder.'):format(NAME_PROJECT_FOLDER))
+    return false, -1
+  end
+
   local winid_save = vim.api.nvim_get_current_win()
 
   vim.cmd([[
@@ -55,7 +60,7 @@ function M.create_window_tabaka()
   local winid_tabaka = vim.api.nvim_get_current_win()
   vim.api.nvim_set_current_win(winid_save)
 
-  return winid_tabaka
+  return true, winid_tabaka
 end
 
 
@@ -78,10 +83,6 @@ end
 
 
 function M.setup_window_tabaka(winid_tabaka)
-  if not M.folder_or_file_exist(M.get_filepath_project_folder_tabaka()) then
-    print('Tabaka: Failed to find the `.tabaka/` folder.')
-    return
-  end
 
   if not M.folder_or_file_exist(M.get_filepath_markdown_tabaka())
     then -- create one inside the folder.
