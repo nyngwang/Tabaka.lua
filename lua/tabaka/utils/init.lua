@@ -76,9 +76,9 @@ function M.get_or_create_buf(filepath)
   end
   -- have to create the buffer.
 
-  local buf = vim.api.nvim_create_buf(true, false)
-  vim.api.nvim_buf_set_name(buf, filepath)
-  return buf
+  local bufnr = vim.api.nvim_create_buf(true, false)
+  vim.api.nvim_buf_set_name(bufnr, filepath)
+  return bufnr
 end
 
 
@@ -89,8 +89,9 @@ function M.setup_window_tabaka(winid_tabaka)
     M.create_file(M.get_filepath_markdown_tabaka())
   end
   -- open the file.
-  local buf = M.get_or_create_buf(M.get_filepath_markdown_tabaka())
-  vim.api.nvim_win_set_buf(winid_tabaka, buf)
+  local bufnr = M.get_or_create_buf(M.get_filepath_markdown_tabaka())
+  vim.api.nvim_win_set_buf(winid_tabaka, bufnr)
+  vim.fn.bufload(bufnr)
 end
 
 
