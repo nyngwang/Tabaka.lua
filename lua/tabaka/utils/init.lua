@@ -35,7 +35,7 @@ function M.get_window_tabaka()
   local bufnr_winnr1 = vim.api.nvim_win_get_buf(winid_winnr1)
 
   if -- the bufname of window of winnr1 is NOT tabaka markdown.
-    not M.get_filepath_markdown_tabaka() == vim.api.nvim_buf_get_name(bufnr_winnr1)
+    M.get_filepath_markdown_tabaka() ~= vim.api.nvim_buf_get_name(bufnr_winnr1)
     then
     return { false, -1 }
   end
