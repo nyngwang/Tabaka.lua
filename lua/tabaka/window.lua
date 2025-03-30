@@ -9,7 +9,10 @@ M._context = {
 function M.get_window_tabaka()
   local winid_tabaka = M._context.winid_tabaka
 
-  if winid_tabaka == -1 then
+  if winid_tabaka == -1
+    or -- the internals outdated, since the user might `:q` at the tabaka window directly.
+    not vim.api.nvim_win_is_valid(winid_tabaka)
+    then
     return { false, -1 }
   end
 
