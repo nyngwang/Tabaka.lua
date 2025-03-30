@@ -3,9 +3,9 @@ local M = {}
 
 
 function M.create_file(filepath)
-    vim.cmd(([[
-      !touch %s
-    ]]):format(filepath))
+  vim.cmd(([[
+    !touch %s
+  ]]):format(filepath))
 end
 
 
