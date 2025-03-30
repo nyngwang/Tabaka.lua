@@ -3,24 +3,6 @@ local P = require('tabaka.filepath')
 local M = {}
 
 
-local get_or_create_buf = function (filepath)
-  local bufs_valid = vim.tbl_filter(function (bufnr)
-    return vim.api.nvim_buf_is_valid(bufnr)
-  end, vim.api.nvim_list_bufs())
-
-  for _, bufnr in ipairs(bufs_valid) do
-    if filepath == vim.api.nvim_buf_get_name(bufnr) then
-      return bufnr
-    end
-  end
-  -- have to create the buffer.
-
-  local bufnr = vim.api.nvim_create_buf(true, false)
-  vim.api.nvim_buf_set_name(bufnr, filepath)
-  return bufnr
-end
-
-
 function M.get_window_tabaka()
   -- assert: when exist, we can safely assume it's always located in the window of winnr1.
   local winid_winnr1 = vim.fn.win_getid(1)
@@ -57,15 +39,14 @@ end
 
 
 function M.setup_window_tabaka(winid_tabaka)
-
   if not P.folder_or_file_exist(P.get_filepath_markdown_tabaka())
     then -- create one inside the folder.
-    M.create_file(P.get_filepath_markdown_tabaka())
+    P.create_file(P.get_filepath_markdown_tabaka())
   end
   -- open the file.
-  local bufnr = get_or_create_buf(P.get_filepath_markdown_tabaka())
-  vim.api.nvim_win_set_buf(winid_tabaka, bufnr)
+  local bufnr = vim.fn.bufadd(P.get_filepath_markdown_tabaka())
   vim.fn.bufload(bufnr)
+  vim.api.nvim_win_set_buf(winid_tabaka, bufnr)
 end
 
 
