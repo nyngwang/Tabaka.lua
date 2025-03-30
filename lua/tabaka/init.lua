@@ -55,9 +55,8 @@ end
 function M.toggle_window_tabaka()
   if -- already presented in the current tabpage.
     W.get_window_tabaka()[1]
-    then -- close it.
-    -- TODO: the user might not have auto-save plugin!
-    vim.api.nvim_win_close(W.get_window_tabaka()[2], false)
+    then -- try close it.
+    W.close_window_tabaka(W.get_window_tabaka()[2])
     return
   end
   -- otherwise, we try to open the tabaka window.

@@ -1,40 +1,66 @@
 local C = require('tabaka.defaults').constants
 local P = require('tabaka.filepath')
 local M = {}
+M._context = {
+  winid_tabaka = -1,
+}
 
 
 function M.get_window_tabaka()
-  -- assert: when exist, we can safely assume it's always located in the window of winnr1.
-  local winid_winnr1 = vim.fn.win_getid(1)
-  local bufnr_winnr1 = vim.api.nvim_win_get_buf(winid_winnr1)
+  local winid_tabaka = M._context.winid_tabaka
 
-  if -- the bufname of window of winnr1 is NOT tabaka markdown.
-    P.get_filepath_markdown_tabaka() ~= vim.api.nvim_buf_get_name(bufnr_winnr1)
-    then
+  if winid_tabaka == -1 then
     return { false, -1 }
   end
 
-  return { true, winid_winnr1 }
+  local bufnr_tabaka = vim.api.nvim_win_get_buf(winid_tabaka)
+
+  if -- the tabaka window contains the other buffer.
+    vim.api.nvim_buf_get_name(bufnr_tabaka)
+    ~= P.get_filepath_markdown_tabaka()
+    then -- update internals, since we don't treat it as the tabaka window anymore.
+    M._context.winid_tabaka = -1
+    return { false, -1 }
+  end
+
+  return { true, winid_tabaka }
 end
 
 
 function M.create_window_tabaka()
-  if not P.folder_or_file_exist(P.get_filepath_project_folder_tabaka()) then
+  if -- not exist the project folder (thus the markdown) at all.
+    not P.folder_or_file_exist(P.get_filepath_project_folder_tabaka())
+    then -- stop create the window.
     print(('Tabaka: Failed to find the `%s/` folder.'):format(C.NAME_PROJECT_FOLDER))
     return false, -1
   end
 
   local winid_save = vim.api.nvim_get_current_win()
 
-  vim.cmd([[
-    leftabove vsplit
-    wincmd H
-  ]])
+  -- TODO: extract to setup opts.
+  vim.cmd(([[
+    %s
+    wincmd %s
+  ]]):format('leftabove vsplit', 'H'))
 
   local winid_tabaka = vim.api.nvim_get_current_win()
+  M._context.winid_tabaka = winid_tabaka
   vim.api.nvim_set_current_win(winid_save)
 
   return true, winid_tabaka
+end
+
+
+function M.close_window_tabaka(winid_tabaka)
+  -- assert: `winid_tabaka` is the winid of the tabaka window.
+  vim.api.nvim_win_close(winid_tabaka, false)
+  if -- didn't close the window for some reason.
+    vim.api.nvim_win_is_valid(winid_tabaka)
+    then
+      print('Tabaka: Failed to close the tabaka window.')
+  end
+  -- did close, can update internals.
+  M._context.winid_tabaka = -1
 end
 
 
