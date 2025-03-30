@@ -63,7 +63,7 @@ function M.toggle_window_tabaka()
   -- otherwise, we try to open the tabaka window.
   local ok, winid_tabaka = W.create_window_tabaka()
   if not ok then return end
-  W.setup_window_tabaka(winid_tabaka)
+  W.load_markdown_in_window(winid_tabaka)
 end
 
 

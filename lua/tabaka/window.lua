@@ -38,7 +38,7 @@ function M.create_window_tabaka()
 end
 
 
-function M.setup_window_tabaka(winid_tabaka)
+function M.load_markdown_in_window(winid_tabaka)
   if not P.folder_or_file_exist(P.get_filepath_markdown_tabaka())
     then -- create the markdown inside the folder.
     P.create_file(P.get_filepath_markdown_tabaka())
