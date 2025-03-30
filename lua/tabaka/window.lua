@@ -40,10 +40,10 @@ end
 
 function M.setup_window_tabaka(winid_tabaka)
   if not P.folder_or_file_exist(P.get_filepath_markdown_tabaka())
-    then -- create one inside the folder.
+    then -- create the markdown inside the folder.
     P.create_file(P.get_filepath_markdown_tabaka())
   end
-  -- open the file.
+  -- open the markdown in the tabaka window.
   local bufnr = vim.fn.bufadd(P.get_filepath_markdown_tabaka())
   vim.fn.bufload(bufnr)
   vim.api.nvim_win_set_buf(winid_tabaka, bufnr)
