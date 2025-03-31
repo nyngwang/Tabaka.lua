@@ -19,15 +19,7 @@ M.action = {
     -- the second layer is the command category.
     create = {
       -- the third layer is the command itself.
-      create_with_template = {
-        -- the fourth layer is a list: [action, object].
-        function (args)
-        end,
-        function ()
-          -- TODO: should scan the template folder.
-          return { 'template1.md', 'template2.md' }
-        end,
-      },
+      create_with_template = require('./create_with_template.lua'),
     },
     window = {
       toggle_window = {
@@ -158,3 +150,4 @@ end
 
 
 return M
+
