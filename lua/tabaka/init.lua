@@ -39,7 +39,6 @@
 --     - scroll the buffer so that the task title with the first few lines of the tabaka window
 --
 --
-local W = require('tabaka.window')
 local A = require('tabaka.autocmds')
 local L = require('tabaka.cmdline')
 local M = {}
@@ -49,20 +48,6 @@ function M.setup(opts)
   -- only create autocmds after setup.
   A.create_autocmds()
   L.create_user_commands()
-end
-
-
-function M.toggle_window_tabaka()
-  if -- already presented in the current tabpage.
-    W.get_window_tabaka()[1]
-    then -- try close it.
-    W.close_window_tabaka(W.get_window_tabaka()[2])
-    return
-  end
-  -- otherwise, we try to open the tabaka window.
-  local ok, winid_tabaka = W.create_window_tabaka()
-  if not ok then return end
-  W.load_markdown_in_window(winid_tabaka)
 end
 
 
