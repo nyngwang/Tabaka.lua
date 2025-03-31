@@ -1,23 +1,33 @@
--- PLAN:
+-- PLUGIN PLAN:
 --
 --
--- invariants in tabaka:
--- - tabaka should not delete any existing section in the markdown implicitly
--- - tabaka should be able to scroll the markdown correctly for each tabpage, after restoring a session
---   - note: we always have `tabnr == tabid` for every tabpage after restoring a session
--- - tabaka should execute a command only-if the tabaka window is open under the current tabpage
+-- tabaka should follow these invariants:
+-- - it should not create/delete any markdown file implicitly
+-- - it should open the correct markdown file for each tabpage
+--   - after reordering of tabpage
+--   - after restoring from a session
+--     - NOTE: `tabnr == tabid` for every tabpage after restoring a session
+-- - it should execute an editing commands only if the tabaka window is presented
+--
+--
+-- tabaka can create & maintain markdown files for users
+-- - a user needs to call the creation command before using tabaka
+--   - notify the user the markdown has NOT been created
+--   - notify the user the markdown has been created
+-- - a user can choose a template to use for the underlying markdown
 --
 --
 -- tabaka can be customized by the following properties:
 -- - a user can define the width of the tabaka window
 -- - a user can define the position of the tabaka window (left/right/top/down)
--- - a user can provide a template for the markdown
---   - a user can define custom rules for a template
+-- - a user can supply a custom template for the markdown, instead of the default one
+--   - a user can define custom placeholder for each template
 --
 --
--- create user commands, `:tabaka commands`, for the following use cases:
--- - toggle the markdown as the very-{top,down,left,right} fixed-{width,height} window
--- - modify the markdown easily (tabaka<=nvim)
+-- tabaka will create user commands, `:tabaka commands`, for the following use cases:
+-- - a user can create the markdown for the current tabpage
+-- - a user can toggle the markdown as the very-{top,down,left,right} fixed-{width,height} window
+-- - a user can modify the markdown easily (tabaka<=nvim)
 --   - update the task title of the current tabpage
 --   - update the task description of the current tabpage
 --   - add/del an item in the note list of the current tabpage
@@ -28,15 +38,6 @@
 --   - add/del an item in the buffer list of the current tabpage
 --     - use the buffer in the current window
 --     - use the buffer id provided by the user
---
---
--- create autocmds to support the features above:
--- - tabaka should be able to scroll the markdown correctly for each tabpage, after restoring a session
---   - when the tabaka window is open under a tabpage
---     - if section not exist, create one using the default or template provided by the user
---     - if section exist, scroll the buffer so that the task title with the first few lines of the tabaka window
---   - when the user move the cursor out of the tabaka window
---     - scroll the buffer so that the task title with the first few lines of the tabaka window
 --
 --
 local A = require('tabaka.autocmds')
