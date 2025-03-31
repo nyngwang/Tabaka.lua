@@ -130,6 +130,22 @@ function M.dispatch_command(fargs)
     return
   end
 
+
+  if argc == 2
+    then -- still need to check the provided object is valid.
+    local objects_valid = actions[action][2]()
+    local arg_action = args[1]
+    local found = false
+    for _, o in ipairs(objects_valid) do
+      if arg_action == o then found = true end
+    end
+    if not found then
+      print(('Tabaka: Failed to run command: %s, invalid argument: %s'):format(action, arg_action))
+      return
+    end
+  end
+
+
   -- finally, peacefully...
   actions[action][1](args)
 end
