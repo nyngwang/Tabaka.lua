@@ -123,10 +123,10 @@ function M.dispatch_command(fargs)
     return
   end
 
-  local args = { unpack(fargs, 2) }
+  local args_action = { unpack(fargs, 2) }
   if argc == 1
     then -- special case for `{nil}`.
-    args = {}
+    args_action = {}
   end
 
   if -- the tabaka window does not exist.
@@ -141,7 +141,7 @@ function M.dispatch_command(fargs)
   if argc == 2
     then -- still need to check the provided object is valid.
     local objects_valid = actions[action][2]()
-    local arg_action = args[1]
+    local arg_action = args_action[1]
     local found = false
     for _, o in ipairs(objects_valid) do
       if arg_action == o then found = true end
@@ -153,7 +153,7 @@ function M.dispatch_command(fargs)
   end
 
   -- finally, peacefully...
-  actions[action][1](args)
+  actions[action][1](args_action)
 end
 
 
