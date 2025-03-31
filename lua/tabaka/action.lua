@@ -16,6 +16,8 @@ M.object = {
   end,
   add_buffer = function ()
     return { '42', '69' }
+  end,
+  delete_buffer = function ()
   end
 }
 
@@ -33,6 +35,8 @@ M.action = {
   end,
   add_buffer = function ()
   end,
+  delete_buffer = function ()
+  end
 }
 
 
