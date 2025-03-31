@@ -85,6 +85,9 @@ function M.create_user_commands()
         -- the first argument should be an action, but need check.
         local action = words[2]
         if not M.action[action] then return {} end
+        if -- the action takes no argument.
+          not M.object[action]
+          then return {} end
         return M.object[action]()
       end
       return {} -- don't provide completion for #args > 2.
