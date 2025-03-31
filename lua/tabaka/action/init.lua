@@ -19,7 +19,7 @@ M.action = {
     -- the second layer is the command category.
     create = {
       -- the third layer is the command itself.
-      create_with_template = require('./create_with_template.lua'),
+      create_with_template = require('tabaka.action.create_with_template'),
     },
     window = {
       toggle_window = {
