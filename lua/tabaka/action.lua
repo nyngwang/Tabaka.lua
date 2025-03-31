@@ -50,7 +50,7 @@ function M.toggle_window_tabaka()
 end
 
 
-function M.dispatcher_command(cmdline)
+function M.dispatcher_command(fargs)
   -- TODO: update after testing.
   M.toggle_window_tabaka()
 end
