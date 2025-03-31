@@ -18,6 +18,8 @@ M.action = {
         function (args)
         end,
         function ()
+          -- TODO: should scan the template folder.
+          return { 'template1.md', 'template2.md' }
         end,
       },
     },
