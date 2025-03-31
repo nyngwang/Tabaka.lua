@@ -3,6 +3,12 @@ local M = {}
 
 
 local get_current_filetype = function ()
+  -- NOTE:
+  -- we use this function to avoid specifying the filetype for every command.
+  -- in the future, a user will need to call a command to set "the current filetype",
+  -- and that change "the entire set" of command completions.
+
+  -- we only support `markdown` for now.
   return 'markdown'
 end
 
