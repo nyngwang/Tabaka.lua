@@ -101,7 +101,7 @@ function M.dispatch_command(fargs)
   local argc = #fargs
   if -- is the laziest command.
     argc == 0 then
-    M.action[('%s.window.toggle_window'):format(get_current_filetype())]({})
+    M.action[get_current_filetype()].window.toggle_window[1]({})
     return
   end
 
@@ -124,7 +124,7 @@ function M.dispatch_command(fargs)
   if -- the tabaka window does not exist.
     not W.get_window_tabaka()[1]
     and -- it's an editing command.
-    M.action[('%s.edit'):format(get_current_filetype())][action]
+    M.action[get_current_filetype()].edit[action]
     then -- abort editing commands.
     print(('Tabaka: Failed to run command: %s, toggle the window first.'):format(action))
     return
