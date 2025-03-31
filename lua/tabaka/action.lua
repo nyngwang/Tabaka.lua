@@ -138,7 +138,6 @@ function M.dispatch_command(fargs)
     return
   end
 
-
   if argc == 2
     then -- still need to check the provided object is valid.
     local objects_valid = actions[action][2]()
@@ -152,7 +151,6 @@ function M.dispatch_command(fargs)
       return
     end
   end
-
 
   -- finally, peacefully...
   actions[action][1](args)
