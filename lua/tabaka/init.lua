@@ -40,14 +40,12 @@
 --     - use the buffer id provided by the user
 --
 --
-local A = require('tabaka.autocmds')
 local L = require('tabaka.cmdline')
 local M = {}
 
 
 function M.setup(opts)
-  -- only create autocmds after setup.
-  A.create_autocmds()
+  -- create user commands after setup.
   L.create_user_commands()
 end
 
