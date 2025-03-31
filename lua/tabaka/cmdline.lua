@@ -6,7 +6,7 @@ local M = {}
 function M.create_user_commands()
   vim.api.nvim_create_user_command(C.NAME_COMMAND, function (opts)
     local fargs = opts.fargs
-    -- TODO: validate fargs.
+    if #fargs > 2 then return end
     V.dispatcher_command(fargs)
   end, {
     nargs = '*',
