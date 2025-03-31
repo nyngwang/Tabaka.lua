@@ -21,7 +21,7 @@
 -- - a user can define the width of the tabaka window
 -- - a user can define the position of the tabaka window (left/right/top/down)
 -- - a user can supply a custom template for the markdown, instead of the default one
---   - a user can define custom placeholder for each template
+-- - a user can define custom placeholder for each template
 --
 --
 -- tabaka will create user commands, `:tabaka commands`, for the following use cases:
