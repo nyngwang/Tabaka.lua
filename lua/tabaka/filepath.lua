@@ -9,6 +9,19 @@ function M.create_file(filepath)
 end
 
 
+function M.get_filepath_tabaka_runtime()
+  local paths_rt_plugins = vim.split(vim.o.runtimepath, ',')
+  for _, path in ipairs(paths_rt_plugins) do
+    if path:match(('/%s$'):format(C.NAME_PROJECT)) then
+      return path
+    end
+  end
+  -- TODO: raise an error.
+  print('Tabaka: Internal error, plugin runtime not found.')
+  return ''
+end
+
+
 function M.get_filepath_user_project_folder_tabaka()
   return ('%s/%s'):format(vim.fn.getcwd(-1,-1), C.NAME_PROJECT_FOLDER)
 end
