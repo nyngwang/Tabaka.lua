@@ -7,9 +7,9 @@ local M = {}
 -- M.action['markdown']['create']['create_with_template'][1]
 --           ^1          ^2        ^3                     ^4
 -- Where:
--- 1: the first layer is the document type; we only support markdown for now.
+-- 1: the first  layer is the document type; we only support markdown for now.
 -- 2: the second layer is the command category, e.g. editing commands.
--- 3: the third layer is the name of the action, e.g. toggle_window.
+-- 3: the third  layer is the name of the action, e.g. toggle_window.
 -- 4: the fourth layer is the [action,objects]-pair; both are functions.
 M.action = {
   markdown = {
