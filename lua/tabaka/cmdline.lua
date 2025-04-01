@@ -47,7 +47,7 @@ function M.create_user_commands()
         local action = words[2]
         if not actions[action] then return {} end
         -- each action knows how to get its own objects.
-        return actions[action][2]()
+        return actions[action][2](V.get_current_filetype())
       end
       return {} -- don't provide completion for #args > 2.
     end
