@@ -132,7 +132,7 @@ function M.dispatch_command(fargs)
 
   if argc == 2
     then -- still need to check the provided object is valid.
-    local objects_valid = actions[action][2]()
+    local objects_valid = actions[action][2](M.get_current_filetype())
     local arg_action = args_action[1]
     local found = false
     for _, o in ipairs(objects_valid) do
@@ -145,7 +145,7 @@ function M.dispatch_command(fargs)
   end
 
   -- finally, peacefully...
-  actions[action][1](args_action)
+  actions[action][1](args_action, M.get_current_filetype())
 end
 
 
