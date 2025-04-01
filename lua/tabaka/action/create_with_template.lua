@@ -3,6 +3,7 @@ return {
   function (args)
     -- TODO: duplicate the markdown template into project folder.
     print('Tabaka mock: markdown has been created.')
+    print('The filepath of create_with_template.lua:', vim.fn.expand('<sfile>:p'))
   end,
   function ()
     -- TODO: should scan the template folder.
