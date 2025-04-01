@@ -1,3 +1,4 @@
+local U = require('tabaka.utils')
 local P = require('tabaka.filepath')
 
 
@@ -13,7 +14,7 @@ return {
     P.copy_file_into_folder_and_rename(
       path_template,
       P.get_filepath_user_project_folder_tabaka(),
-      ('%d_%d'):format(tabnr_current, tabid_current)
+      ('%d_%d.%s'):format(tabnr_current, tabid_current, U.ft_to_ext[filetype])
     )
   end,
   function (filetype)
