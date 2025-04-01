@@ -2,14 +2,7 @@ local C = require('tabaka.defaults').constants
 local M = {}
 
 
-function M.create_file(filepath)
-  vim.cmd(([[
-    !touch %s
-  ]]):format(filepath))
-end
-
-
-function M.get_filepath_tabaka_runtime()
+local get_filepath_tabaka_runtime = function ()
   local paths_rt_plugins = vim.split(vim.o.runtimepath, ',')
   for _, path in ipairs(paths_rt_plugins) do
     if path:match(('/%s$'):format(C.NAME_PROJECT)) then
@@ -19,6 +12,18 @@ function M.get_filepath_tabaka_runtime()
   -- TODO: raise an error.
   print('Tabaka: Internal error, plugin runtime not found.')
   return ''
+end
+
+
+function M.create_file(filepath)
+  vim.cmd(([[
+    !touch %s
+  ]]):format(filepath))
+end
+
+
+function M.get_filepath_tabaka_folder_template()
+  return ('%s/template/'):format(get_filepath_tabaka_runtime())
 end
 
 
