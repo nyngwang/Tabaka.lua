@@ -20,7 +20,7 @@ function M.get_window_tabaka()
 
   if -- the tabaka window contains the other buffer.
     vim.api.nvim_buf_get_name(bufnr_tabaka)
-    ~= P.get_filepath_markdown_tabaka()
+    ~= P.get_filepath_user_project_markdown_tabaka()
     then -- update internals, since we don't treat it as the tabaka window anymore.
     M._context.winid_tabaka = -1
     return { false, -1 }
@@ -32,7 +32,7 @@ end
 
 function M.create_window_tabaka()
   if -- not exist the project folder (thus the markdown) at all.
-    not P.folder_or_file_exist(P.get_filepath_project_folder_tabaka())
+    not P.folder_or_file_exist(P.get_filepath_user_project_folder_tabaka())
     then -- stop create the window.
     print(('Tabaka: Failed to find the `%s/` folder.'):format(C.NAME_PROJECT_FOLDER))
     return false, -1
@@ -68,12 +68,12 @@ end
 
 
 function M.load_markdown_in_window(winid_tabaka)
-  if not P.folder_or_file_exist(P.get_filepath_markdown_tabaka())
+  if not P.folder_or_file_exist(P.get_filepath_user_project_markdown_tabaka())
     then -- create the markdown inside the folder.
-    P.create_file(P.get_filepath_markdown_tabaka())
+    P.create_file(P.get_filepath_user_project_markdown_tabaka())
   end
   -- open the markdown in the tabaka window.
-  local bufnr = vim.fn.bufadd(P.get_filepath_markdown_tabaka())
+  local bufnr = vim.fn.bufadd(P.get_filepath_user_project_markdown_tabaka())
   vim.fn.bufload(bufnr)
   vim.api.nvim_win_set_buf(winid_tabaka, bufnr)
 end

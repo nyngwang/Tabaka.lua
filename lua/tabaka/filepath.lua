@@ -9,13 +9,13 @@ function M.create_file(filepath)
 end
 
 
-function M.get_filepath_project_folder_tabaka()
+function M.get_filepath_user_project_folder_tabaka()
   return ('%s/%s'):format(vim.fn.getcwd(-1,-1), C.NAME_PROJECT_FOLDER)
 end
 
 
-function M.get_filepath_markdown_tabaka()
-  return ('%s/%s.md'):format(M.get_filepath_project_folder_tabaka(), C.NAME_MARKDOWN)
+function M.get_filepath_user_project_markdown_tabaka()
+  return ('%s/%s.md'):format(M.get_filepath_user_project_folder_tabaka(), C.NAME_MARKDOWN)
 end
 
 
