@@ -68,7 +68,7 @@ function M.get_current_filetype()
 end
 
 
-function M.get_actions_all_cats(filetype)
+function M.get_all_actions_by_filetype(filetype)
   if -- the caller does not know the context.
     not filetype
     then -- use the internal default.
@@ -94,7 +94,7 @@ function M.dispatch_command(fargs)
   end
 
   local action = fargs[1]
-  local actions = M.get_actions_all_cats()
+  local actions = M.get_all_actions_by_filetype()
 
   if -- action is not valid.
     not actions[action] then

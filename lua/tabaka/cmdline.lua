@@ -24,7 +24,7 @@ function M.create_user_commands()
         count_sep == 0
         then return {} end
 
-      local actions = V.get_actions_all_cats()
+      local actions = V.get_all_actions_by_filetype()
       local keys_actions = vim.tbl_keys(actions)
 
       if -- complete the first argument.
