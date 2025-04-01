@@ -2,12 +2,18 @@ local W = require('tabaka.window')
 local M = {}
 
 
+-- HOW-TO-USE:
+--
+-- M.action['markdown']['create']['create_with_template'][1]
+--           ^1          ^2        ^3                     ^4
+-- Where:
+-- 1: the first layer is the document type; we only support markdown for now.
+-- 2: the second layer is the command category, e.g. editing commands.
+-- 3: the third layer is the name of the action, e.g. toggle_window.
+-- 4: the fourth layer is the [action,objects]-pair; both are functions.
 M.action = {
-  -- the first layer is the document type; we only support markdown now.
   markdown = {
-    -- the second layer is the command category.
     create = {
-      -- the third layer is the command itself.
       create_with_template = require('tabaka.action.create_with_template'),
     },
     window = {

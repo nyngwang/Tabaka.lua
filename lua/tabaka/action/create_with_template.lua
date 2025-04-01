@@ -3,7 +3,6 @@ local P = require('tabaka.filepath')
 
 
 return {
-  -- the fourth layer is a list: [action, object].
   function (args, filetype)
     local name_template = args[1]
     local path_template = ('%s/%s'):format(P.get_filepath_tabaka_folder_template(filetype), name_template)
