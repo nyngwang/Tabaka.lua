@@ -17,25 +17,7 @@ M.action = {
       create_with_template = require('tabaka.action.create_with_template'),
     },
     window = {
-      toggle_window = {
-        function (args)
-          -- TODO: check creation done.
-
-          if -- already presented in the current tabpage.
-            W.get_window_tabaka()[1]
-            then -- try close it.
-            W.close_window_tabaka(W.get_window_tabaka()[2])
-            return
-          end
-          -- otherwise, we try to open the tabaka window.
-          local ok, winid_tabaka = W.create_window_tabaka()
-          if not ok then return end
-          W.load_markdown_in_window(winid_tabaka)
-        end,
-        function ()
-          return { 'H', 'J', 'K', 'L' }
-        end,
-      }
+      toggle_window = require('tabaka.action.toggle_window'),
     },
     edit = {
       update_task_title = {
