@@ -22,8 +22,24 @@ function M.create_file(filepath)
 end
 
 
-function M.get_filepath_tabaka_folder_template()
-  return ('%s/template/'):format(get_filepath_tabaka_runtime())
+function M.copy_file_into_folder_and_rename(path_file_src, path_folder, filename_new)
+  local path_file_new = ('%s/%s'):format(path_folder, filename_new)
+
+  local file_src = io.open(path_file_src, 'rb')
+  if not file_src then print('Tabaka: Internal error, cannot copy template file.') return end
+
+  local content_file_src = file_src:read('a')
+  file_src:close()
+
+  local file_new = io.open(path_file_new)
+  if not file_new then print('Tabaka: Internal error, cannot copy template file.') return end
+  file_new:write(content_file_src)
+  file_new:close()
+end
+
+
+function M.get_filepath_tabaka_folder_template(filetype)
+  return ('%s/template/%s'):format(get_filepath_tabaka_runtime(), filetype)
 end
 
 

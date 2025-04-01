@@ -2,17 +2,6 @@ local W = require('tabaka.window')
 local M = {}
 
 
-local get_current_filetype = function ()
-  -- NOTE:
-  -- we use this function to avoid specifying the filetype for every command.
-  -- in the future, a user will need to call a command to set "the current filetype",
-  -- and that change "the entire set" of command completions.
-
-  -- we only support `markdown` for now.
-  return 'markdown'
-end
-
-
 M.action = {
   -- the first layer is the document type; we only support markdown now.
   markdown = {
@@ -80,11 +69,22 @@ M.action = {
 }
 
 
+function M.get_current_filetype()
+  -- NOTE:
+  -- we use this function to avoid specifying the filetype for every command.
+  -- in the future, a user will need to call a command to set "the current filetype",
+  -- and that change "the entire set" of command completions.
+
+  -- we only support `markdown` for now.
+  return 'markdown'
+end
+
+
 function M.get_actions_all_cats(filetype)
   if -- the caller does not know the context.
     not filetype
     then -- use the internal default.
-    filetype = get_current_filetype()
+    filetype = M.get_current_filetype()
   end
 
   local actions_all = {}
@@ -101,7 +101,7 @@ function M.dispatch_command(fargs)
   local argc = #fargs
   if -- is the laziest command.
     argc == 0 then
-    M.action[get_current_filetype()].window.toggle_window[1]({})
+    M.action[M.get_current_filetype()].window.toggle_window[1]({})
     return
   end
 
@@ -124,7 +124,7 @@ function M.dispatch_command(fargs)
   if -- the tabaka window does not exist.
     not W.get_window_tabaka()[1]
     and -- it's an editing command.
-    M.action[get_current_filetype()].edit[action]
+    M.action[M.get_current_filetype()].edit[action]
     then -- abort editing commands.
     print(('Tabaka: Failed to run command: %s, toggle the window first.'):format(action))
     return
