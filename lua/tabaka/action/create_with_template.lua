@@ -18,7 +18,9 @@ return {
   end,
   function (filetype)
     local path_folder_template = P.get_filepath_tabaka_folder_template(filetype)
-    return vim.fn.globpath(path_folder_template, '*', false, true)
+    return vim.tbl_map(function (path_abs)
+      return vim.fn.fnamemodify(path_abs, ':t')
+    end, vim.fn.globpath(path_folder_template, '*', false, true))
   end,
 
 }
