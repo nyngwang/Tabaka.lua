@@ -2,16 +2,33 @@ local W = require('tabaka.window')
 local M = {}
 
 
--- HOW-TO-USE:
---
--- M.action['markdown']['create']['create_with_template'][1]
---           ^1          ^2        ^3                     ^4
--- Where:
--- 1: the first  layer is the document type; we only support markdown for now.
--- 2: the second layer is the command category, e.g. editing commands.
--- 3: the third  layer is the name of the action, e.g. toggle_window.
--- 4: the fourth layer is the [action,objects]-pair; both are functions.
-M.action = {
+local function LanyardTable(cotable, indexes)
+  -- the second param is necessary for initial case.
+  indexes = indexes or {}
+
+  return setmetatable({}, {
+    __index = function (t, k)
+      local _indexes = {}
+      for _, index in ipairs(indexes) do
+        _indexes[#_indexes+1] = index
+      end
+      local _cotable = cotable and cotable[k] or nil
+      return LanyardTable(_cotable, _indexes)
+    end,
+    __call = function (t, args)
+      if type(cotable) == 'function' then
+        return cotable({
+          indexes = indexes,
+          unpack(args or {})
+        })
+      end
+      return nil
+    end
+  })
+end
+
+
+M.__action = {
   markdown = {
     create = {
       create_with_template = require('tabaka.action.create_with_template'),
@@ -57,44 +74,66 @@ M.action = {
 }
 
 
+function M.get_action(lanyard)
+  lanyard = lanyard or false
+  -- HOW-TO-USE:
+  --
+  -- action['markdown']['create']['create_with_template'][1]
+  --            ^1          ^2        ^3                     ^4
+  -- Where:
+  -- 1: the first  layer is the document type; we only support markdown for now.
+  -- 2: the second layer is the command category, e.g. editing commands.
+  -- 3: the third  layer is the name of the action, e.g. toggle_window.
+  -- 4: the fourth layer is the [action,objects]-pair; both are functions.
+  if lanyard then
+    return LanyardTable(M.__action)
+  end
+  return M.__action
+end
+
+
 function M.get_current_filetype()
-  -- NOTE:
-  -- we use this function to avoid specifying the filetype for every command.
-  -- in the future, a user will need to call a command to set "the current filetype",
-  -- and that change "the entire set" of command completions.
+  -- this function returns the filetype of the current set of commands.
+  -- in the future, we can provide a way to change the behaviour of this
+  -- function, and thus change the current set of commands.
 
   -- we only support `markdown` for now.
   return 'markdown'
 end
 
 
-function M.get_all_actions_by_filetype(filetype)
-  if -- the caller does not know the context.
-    not filetype
-    then -- use the internal default.
+function M.get_actions_by_filetype(lanyard, filetype)
+  if not filetype
+    then -- use the current filetype.
     filetype = M.get_current_filetype()
   end
 
-  local actions_all = {}
-  for _, actions in pairs(M.action[filetype]) do
-    for k, v in pairs(actions) do
-      actions_all[k] = v
+  local actions = {}
+  for _, actions_by_cate in pairs(M.get_action()[filetype]) do
+    for name, pair_fns in pairs(actions_by_cate) do
+      actions[name] = pair_fns
     end
   end
-  return actions_all
+
+  if lanyard then
+    -- NOTE: cate info is not included.
+    return LanyardTable(actions, { filetype })
+  end
+  return actions
 end
 
 
 function M.dispatch_command(fargs)
   local argc = #fargs
+  local actions = M.get_actions_by_filetype(true)
+  local action = fargs[1]
+
   if -- is the laziest command.
     argc == 0 then
-    M.action[M.get_current_filetype()].window.toggle_window[1]({})
+    -- WARN: this line assume `toggle_window` is defined regardless of the filetype.
+    actions.toggle_window[1]()
     return
   end
-
-  local action = fargs[1]
-  local actions = M.get_all_actions_by_filetype()
 
   if -- action is not valid.
     not actions[action] then
@@ -112,7 +151,7 @@ function M.dispatch_command(fargs)
   if -- the tabaka window does not exist.
     not W.get_window_tabaka()[1]
     and -- it's an editing command.
-    M.action[M.get_current_filetype()].edit[action]
+    M.get_action()[M.get_current_filetype()].edit[action]
     then -- abort editing commands.
     print(('Tabaka: Failed to run command: %s, toggle the window first.'):format(action))
     return
@@ -120,7 +159,7 @@ function M.dispatch_command(fargs)
 
   if argc == 2
     then -- still need to check the provided object is valid.
-    local objects_valid = actions[action][2](M.get_current_filetype())
+    local objects_valid = actions[action][2]()
     local arg_action = args_action[1]
     local found = false
     for _, o in ipairs(objects_valid) do
@@ -133,7 +172,7 @@ function M.dispatch_command(fargs)
   end
 
   -- finally, peacefully...
-  actions[action][1](args_action, M.get_current_filetype())
+  actions[action][1](args_action)
 end
 
 

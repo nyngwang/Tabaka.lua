@@ -3,7 +3,8 @@ local P = require('tabaka.filepath')
 
 
 return {
-  function (args, filetype)
+  function (args)
+    local filetype = args.indexes[1]
     local name_template = args[1]
     local path_template = ('%s/%s'):format(P.get_filepath_tabaka_folder_template(filetype), name_template)
     local tabid_current = vim.api.nvim_get_current_tabpage()
@@ -16,7 +17,8 @@ return {
       ('%d_%d.%s'):format(tabnr_current, tabid_current, U.ft_to_ext[filetype])
     )
   end,
-  function (filetype)
+  function (args)
+    local filetype = args.indexes[1]
     local path_folder_template = P.get_filepath_tabaka_folder_template(filetype)
     return vim.tbl_map(function (path_abs)
       return vim.fn.fnamemodify(path_abs, ':t')
