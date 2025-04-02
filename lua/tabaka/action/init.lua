@@ -2,6 +2,29 @@ local W = require('tabaka.window')
 local M = {}
 
 
+-- HOW-TO-USE:
+--
+-- First, you need to wrap the raw `M.action` table:
+--
+-- local action_ft = M.FootprintTable(M.action)
+--
+-- After that, you can access any underlying function normally:
+--
+-- action_ft['markdown']['create']['create_with_template'][1]
+--            ^1          ^2        ^3                     ^4
+--
+-- The magic part is that in the function body of the underlying
+-- function pair, you can access the value of "N-th index", which
+-- is called "footprints", as indicated above, for example:
+--
+-- {
+--   -- the action function.
+--   function (args)
+--     local filetype = args.footprints[1] -- got 'markdown'.
+--   end,
+--   -- the object function.
+--   ...
+-- }
 M.FootprintTable = function (cotable, footprints)
   -- the second param is necessary for initial case.
   footprints = footprints or {}
