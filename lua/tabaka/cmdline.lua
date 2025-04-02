@@ -26,7 +26,6 @@ function M.create_user_commands()
 
       local actions = V.get_all_actions_by_filetype()
       local keys_actions = vim.tbl_keys(actions)
-      actions = V.get_all_actions_by_filetype(true)
 
       if -- complete the first argument.
         count_sep == 1
@@ -48,7 +47,7 @@ function M.create_user_commands()
         local action = words[2]
         if not actions[action] then return {} end
         -- each action knows how to get its own objects.
-        return actions[action][2]()
+        return V.get_all_actions_by_filetype(true)[action][2]()
       end
       return {} -- don't provide completion for #args > 2.
     end
