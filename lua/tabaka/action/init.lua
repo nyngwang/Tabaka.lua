@@ -26,7 +26,6 @@ local M = {}
 --   ...
 -- }
 M.FootprintTable = function (cotable, footprints)
-  -- the second param is necessary for initial case.
   footprints = footprints or {}
 
   return setmetatable({}, {
@@ -107,30 +106,29 @@ M.action = {
 
 
 function M.get_current_filetype()
-  -- this function returns the filetype of the current set of commands.
-  -- in the future, we can provide a way to change the behaviour of this
-  -- function, and thus change the current set of commands.
-
-  -- we only support `markdown` for now.
+  -- TODO:
+  -- Internally, we use the value returned from this function as
+  -- the default value for the first index of `M.action` when the value
+  -- is missing in the context. In the future, we can provide a command
+  -- to change the return value, and thus swap the entire set of commands.
   return 'markdown'
 end
 
 
 function M.get_all_actions_by_filetype(footprint, filetype)
-  if not filetype
-    then -- use the current filetype.
+  if not filetype then
     filetype = M.get_current_filetype()
   end
 
   local actions = {}
-  for _, actions_by_cate in pairs(M.action[filetype]) do
+  for cate, actions_by_cate in pairs(M.action[filetype]) do
+    -- NOTE: we lost the footprint of `cate` here.
     for name, pair_fns in pairs(actions_by_cate) do
       actions[name] = pair_fns
     end
   end
 
   if footprint then
-    -- NOTE: footprint of action category is lost.
     return M.FootprintTable(actions, { filetype })
   end
   return actions
@@ -142,37 +140,39 @@ function M.dispatch_command(fargs)
   local actions = M.get_all_actions_by_filetype(true)
   local action = fargs[1]
 
-  if -- is the laziest command.
+  if -- the command is `:Baka`.
     argc == 0 then
-    -- WARN: this line assume `toggle_window` is defined regardless of the filetype.
+    -- WARN: this line asserts that `toggle_window` should be provided by all filetypes.
     actions.toggle_window[1]()
     return
   end
+  -- now argc >= 1.
 
-  if -- action is not valid.
-    not actions[action] then
+  if not actions[action] then
     -- TODO: but we should allow a command like `:Baka vsplit L`.
     print(('Tabaka: No such action: %s'):format(action))
     return
   end
+  -- now action is valid.
 
-  local args_action = { unpack(fargs, 2) }
-  if argc == 1
-    then -- special case for `{nil}`.
-    args_action = {}
-  end
-
-  if -- the tabaka window does not exist.
+  if -- there is no tabaka window under the current tabpage.
     not W.get_window_tabaka()[1]
     and -- it's an editing command.
     M.action[M.get_current_filetype()].edit[action]
-    then -- abort editing commands.
-    print(('Tabaka: Failed to run command: %s, toggle the window first.'):format(action))
+    then -- abort it.
+    print(('Tabaka: Failed to run editing command: %s, toggle the window first.'):format(action))
     return
   end
 
-  if argc == 2
-    then -- still need to check the provided object is valid.
+  -- packing args received from the user.
+  local args_action = {} -- the case: argc == 1
+  if argc >= 2 then
+    args_action = { unpack(fargs, 2) }
+  end
+
+  if -- the action is followed by an object.
+    argc == 2
+    then -- validate the object.
     local objects_valid = actions[action][2]()
     local arg_action = args_action[1]
     local found = false
@@ -180,7 +180,7 @@ function M.dispatch_command(fargs)
       if arg_action == o then found = true end
     end
     if not found then
-      print(('Tabaka: Failed to run command: %s, invalid argument: %s'):format(action, arg_action))
+      print(('Tabaka: Failed to run command: %s, invalid object: %s'):format(action, arg_action))
       return
     end
   end
