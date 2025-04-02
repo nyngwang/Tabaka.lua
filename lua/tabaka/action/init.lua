@@ -93,7 +93,7 @@ function M.get_current_filetype()
 end
 
 
-function M.get_actions_by_filetype(footprint, filetype)
+function M.get_all_actions_by_filetype(footprint, filetype)
   if not filetype
     then -- use the current filetype.
     filetype = M.get_current_filetype()
@@ -116,7 +116,7 @@ end
 
 function M.dispatch_command(fargs)
   local argc = #fargs
-  local actions = M.get_actions_by_filetype(true)
+  local actions = M.get_all_actions_by_filetype(true)
   local action = fargs[1]
 
   if -- is the laziest command.
