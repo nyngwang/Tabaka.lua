@@ -2,7 +2,7 @@ local C = require('tabaka.defaults').constants
 local M = {}
 
 
-local get_filepath_tabaka_runtime = function ()
+function M.get_filepath_tabaka_runtime_root()
   local paths_rt_plugins = vim.split(vim.o.runtimepath, ',')
   for _, path in ipairs(paths_rt_plugins) do
     if path:match(('/%s$'):format(C.NAME_PROJECT)) then
@@ -39,7 +39,7 @@ end
 
 
 function M.get_filepath_tabaka_folder_template(filetype)
-  return ('%s/template/%s'):format(get_filepath_tabaka_runtime(), filetype)
+  return ('%s/template/%s'):format(M.get_filepath_tabaka_runtime_root(), filetype)
 end
 
 
