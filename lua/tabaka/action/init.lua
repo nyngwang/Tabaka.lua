@@ -83,7 +83,7 @@ function M.dispatch_command(fargs)
       return action.name == name_action_input
     end, actions)[1],
     'action',
-    args_action
+    unpack(args_action)
   )
 end
 
