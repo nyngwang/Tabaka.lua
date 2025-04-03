@@ -1,5 +1,6 @@
 local C = require('tabaka.defaults').constants
 local V = require('tabaka.action')
+local Cat = require('tabaka.action.catalog')
 local M = {}
 
 
@@ -24,17 +25,19 @@ function M.create_user_commands()
         count_sep == 0
         then return {} end
 
-      local actions = V.get_all_actions_by_filetype()
-      local keys_actions = vim.tbl_keys(actions)
+      local actions = Cat.get_all_actions()
+      local names_actions = vim.tbl_map(function (action)
+        return action.name
+      end, actions)
 
       if -- complete the first argument.
         count_sep == 1
         then -- should return a list of action names.
-        if cword == '' then return keys_actions end
+        if cword == '' then return names_actions end
         local matches = {}
-        for _, action in ipairs(keys_actions) do
-          if action:sub(1, #cword) == cword then
-            matches[#matches+1] = action
+        for _, name_action in ipairs(names_actions) do
+          if name_action:sub(1, #cword) == cword then
+            matches[#matches+1] = name_action
           end
         end
         return matches
@@ -43,11 +46,21 @@ function M.create_user_commands()
       if -- complete the second argument.
         count_sep == 2
         then -- should return the objects defined by each action.
-        -- we expect the first argument to be an action, but who knows?
-        local action = words[2]
-        if not actions[action] then return {} end
+        -- the input action name might not be valid.
+        local name_action_input = words[2]
+        if #vim.tbl_filter(function (action)
+            return action.name == name_action_input
+          end, actions) == 0
+          then
+          return {}
+        end
         -- each action knows how to get its own objects.
-        return V.get_all_actions_by_filetype(true)[action][2]()
+        return V.run_with_context(
+          vim.tbl_filter(function (action)
+            return action.name == name_action_input
+          end, actions)[1],
+          'object'
+        )
       end
       return {} -- don't provide completion for #args > 2.
     end
