@@ -1,11 +1,11 @@
 local P = require('tabaka.filepath')
 local M = {
-  modname = {},
-  filepath_runtime = '',
+  modname_action = {},
+  filepath_head = '',
 }
 function M.__register_modname(modname)
-  M.modname = vim.split(modname, '%.')
-  M.filepath_runtime = P.get_filepath_module_from_modname(M.modname)
+  M.modname_action = vim.split(modname, '%.')
+  M.filepath_head = P.get_filepath_module_from_modname(M.modname_action)
 end
 
 
@@ -22,7 +22,7 @@ end
 function M.get_all_actions(pattern_filetype)
   local names_folders = vim.tbl_map(function (name_folder)
     return vim.fn.fnamemodify(name_folder, ':h:t')
-  end, vim.fn.globpath(M.filepath_runtime, '*/', false, true))
+  end, vim.fn.globpath(M.filepath_head, '*/', false, true))
 
   if not pattern_filetype then
     pattern_filetype = M.get_current_filetype()
@@ -35,7 +35,7 @@ function M.get_all_actions(pattern_filetype)
   local actions = {}
 
   for _, name_folder in ipairs(names_folders) do
-    local modname_folder = table.concat({ table.concat(M.modname, '.'), name_folder }, '.')
+    local modname_folder = table.concat({ table.concat(M.modname_action, '.'), name_folder }, '.')
     for _, action in ipairs(require(modname_folder)) do
       actions[#actions+1] = action
     end
