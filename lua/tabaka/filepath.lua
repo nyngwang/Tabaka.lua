@@ -1,5 +1,22 @@
 local C = require('tabaka.defaults').constants
-local M = {}
+local M = {
+  sep = package.config:sub(1,1)
+}
+
+
+function M.path_runtime_from_modname(modname)
+  if type(modname) == 'string' then
+    modname = vim.split(modname, '%.')
+  end
+  if type(modname) ~= 'table' then
+    return ''
+  end
+
+  return table.concat(
+    { M.get_filepath_tabaka_runtime_root(), 'lua', unpack(modname) },
+    M.sep
+  )
+end
 
 
 function M.get_filepath_tabaka_runtime_root()
