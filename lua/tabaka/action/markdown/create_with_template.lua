@@ -6,7 +6,7 @@ return {
   function (args)
     local filetype = args.self.filetype
     local name_template = args[1]
-    local path_template = ('%s/%s'):format(P.get_filepath_folder_template_project_tabaka(filetype), name_template)
+    local path_template = table.concat({ P.get_filepath_folder_template_project_tabaka(filetype), name_template }, P.sep)
     local tabid_current = vim.api.nvim_get_current_tabpage()
     local tabnr_current = vim.api.nvim_tabpage_get_number(tabid_current)
 
