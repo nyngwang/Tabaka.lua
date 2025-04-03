@@ -1,4 +1,5 @@
 local C = require('tabaka.defaults').constants
+local U = require('tabaka.utils')
 local M = {
   sep = package.config:sub(1,1)
 }
@@ -22,7 +23,10 @@ end
 function M.get_filepath_tabaka_runtime_root()
   local paths_rt_plugins = vim.split(vim.o.runtimepath, ',')
   for _, path in ipairs(paths_rt_plugins) do
-    if path:match(('/%s$'):format(C.NAME_PROJECT)) then
+    if path:match(
+      U.escape_pattern(M.sep .. C.NAME_PROJECT)
+      .. '$'
+    ) then
       return path
     end
   end
@@ -40,8 +44,7 @@ end
 
 
 function M.copy_file_into_folder_and_rename(path_file_src, path_folder, filename_new)
-  local path_file_new = ('%s/%s'):format(path_folder, filename_new)
-
+  local path_file_new = table.concat({ path_folder, filename_new }, M.sep)
   local file_src = io.open(path_file_src, 'rb')
   if not file_src then print('Tabaka: Internal error, cannot read template file.') return end
 
@@ -56,17 +59,20 @@ end
 
 
 function M.get_filepath_tabaka_folder_template(filetype)
-  return ('%s/template/%s'):format(M.get_filepath_tabaka_runtime_root(), filetype)
+  return table.concat({ M.get_filepath_tabaka_runtime_root(), 'template', filetype }, M.sep)
 end
 
 
 function M.get_filepath_user_project_folder_tabaka()
-  return ('%s/%s'):format(vim.fn.getcwd(-1,-1), C.NAME_PROJECT_FOLDER)
+  return table.concat({ vim.fn.getcwd(-1,-1), C.NAME_PROJECT_FOLDER }, M.sep)
 end
 
 
 function M.get_filepath_user_project_markdown_tabaka()
-  return ('%s/%s.md'):format(M.get_filepath_user_project_folder_tabaka(), C.NAME_MARKDOWN)
+  return table.concat({
+    M.get_filepath_user_project_folder_tabaka(),
+    ('%s.md'):format(C.NAME_MARKDOWN),
+  }, M.sep)
 end
 
 

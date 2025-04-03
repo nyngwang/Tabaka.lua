@@ -6,4 +6,9 @@ M.ft_to_ext = {
 }
 
 
+function M.escape_pattern(str_with_pattern)
+  return str_with_pattern:gsub('([%^%$%(%)%%%.%[%]%*%+%-%?])', '%%%1')
+end
+
+
 return M
