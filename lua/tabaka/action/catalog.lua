@@ -21,7 +21,7 @@ end
 
 function M.get_all_actions(pattern_filetype)
   local names_folders = vim.tbl_map(function (name_folder)
-    return vim.fn.fnamemodify(name_folder, ':t')
+    return vim.fn.fnamemodify(name_folder, ':h:t')
   end, vim.fn.globpath(M.filepath_runtime, '*/', false, true))
 
   if not pattern_filetype then
@@ -35,7 +35,7 @@ function M.get_all_actions(pattern_filetype)
   local actions = {}
 
   for _, name_folder in ipairs(names_folders) do
-    local modname_folder = table.concat({ unpack(M.modname), name_folder }, '.')
+    local modname_folder = table.concat({ table.concat(M.modname, '.'), name_folder }, '.')
     for _, action in ipairs(require(modname_folder)) do
       actions[#actions+1] = action
     end
