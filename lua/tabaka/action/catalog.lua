@@ -20,7 +20,10 @@ end
 
 
 function M.get_all_actions(pattern_filetype)
-  local names_folders = vim.fn.globpath(M.filepath_runtime, '*/', false, true)
+  local names_folders = vim.tbl_map(function (name_folder)
+    return vim.fn.fnamemodify(name_folder, ':t')
+  end, vim.fn.globpath(M.filepath_runtime, '*/', false, true))
+
   if not pattern_filetype then
     pattern_filetype = M.get_current_filetype()
   end
