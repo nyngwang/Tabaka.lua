@@ -21,7 +21,13 @@ end
 
 
 function M.close_window_tabaka(winid_tabaka)
-  -- assert `get_winid_tabaka` has been called so `winid_tabaka` is valid.
+  if -- the other program somehow by-pass the `:q`-autocmd.
+    not vim.api.nvim_win_is_valid(winid_tabaka) then
+    vim.cmd(([[
+      doau %s %s
+    ]]):format(C.NAME_PROJECT, 'WinClosed'))
+    return
+  end
 
   vim.api.nvim_win_close(winid_tabaka, false)
 
