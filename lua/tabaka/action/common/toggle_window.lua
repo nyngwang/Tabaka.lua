@@ -13,7 +13,6 @@ return {
     -- otherwise, we try to open the tabaka window.
     local ok, winid_tabaka = W.create_window_tabaka(HJKL)
     if not ok then return end
-    W.load_markdown_in_window(winid_tabaka)
   end,
   function ()
     return { 'H', 'J', 'K', 'L' }
