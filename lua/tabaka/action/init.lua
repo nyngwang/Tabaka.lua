@@ -41,7 +41,7 @@ function M.dispatch_command(fargs)
   -- found action name.
 
   if -- there is no tabaka window under the current tabpage.
-    not W.get_window_tabaka()[1]
+    not W.get_winid_tabaka()[1]
     and -- it's an editing command.
     #vim.tbl_filter(function (action)
       return action.type == 'edit'

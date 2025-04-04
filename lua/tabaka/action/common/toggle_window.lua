@@ -4,9 +4,9 @@ local W = require('tabaka.window')
 return {
   function (args)
     if -- already presented in the current tabpage.
-      W.get_window_tabaka()[1]
+      W.get_winid_tabaka()[1]
       then -- try close it.
-      W.close_window_tabaka(W.get_window_tabaka()[2])
+      W.close_window_tabaka(W.get_winid_tabaka()[2])
       return
     end
     -- otherwise, we try to open the tabaka window.
