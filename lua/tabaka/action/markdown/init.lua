@@ -8,13 +8,6 @@ return {
   },
   {
     filetype = 'markdown',
-    type = 'window',
-    name = 'toggle_window',
-    action = require('tabaka.action.markdown.toggle_window')[1],
-    object = require('tabaka.action.markdown.toggle_window')[2],
-  },
-  {
-    filetype = 'markdown',
     type = 'edit',
     name = 'update_task_title',
     action = function () end,

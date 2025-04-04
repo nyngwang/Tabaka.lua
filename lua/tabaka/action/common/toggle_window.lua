@@ -3,8 +3,6 @@ local W = require('tabaka.window')
 
 return {
   function (args)
-    -- TODO: check creation done.
-
     if -- already presented in the current tabpage.
       W.get_window_tabaka()[1]
       then -- try close it.

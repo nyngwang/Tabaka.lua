@@ -31,6 +31,8 @@ function M.get_all_actions(pattern_filetype)
     names_folders = vim.tbl_filter(function (name_folder)
       return name_folder:match(pattern_filetype)
     end, names_folders)
+
+    names_folders = { 'common', unpack(names_folders) }
   end
   local actions = {}
 
