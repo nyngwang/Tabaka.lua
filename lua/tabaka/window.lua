@@ -12,11 +12,7 @@ function M.get_winid_tabaka()
   local tabid_current = vim.api.nvim_get_current_tabpage()
   local winid_tabaka = M.winid_tabaka[tabid_current]
 
-  if not winid_tabaka
-    or -- the internals outdated, since the user might `:q` at the tabaka window directly.
-    not vim.api.nvim_win_is_valid(winid_tabaka)
-    then
-    M.winid_tabaka[tabid_current] = nil
+  if not winid_tabaka then
     return { false, nil }
   end
 
@@ -27,7 +23,6 @@ end
 function M.close_window_tabaka(winid_tabaka)
   -- assert `get_winid_tabaka` has been called so `winid_tabaka` is valid.
 
-  local bufname_last = vim.api.nvim_buf_get_name(vim.api.nvim_win_get_buf(winid_tabaka))
   vim.api.nvim_win_close(winid_tabaka, false)
 
   if -- the window didn't get closed for some reason.
@@ -37,23 +32,7 @@ function M.close_window_tabaka(winid_tabaka)
     return
   end
   -- did close.
-
-  local tabid_current = vim.api.nvim_get_current_tabpage()
-  M.winid_tabaka[tabid_current] = nil
-
-  -- remember the bufname.
-  if not M.bufname_last[tabid_current] then
-    M.bufname_last[tabid_current] = {}
-  end
-  M.bufname_last[tabid_current][M.winid_enter[tabid_current].HJKL] = bufname_last
-
-  -- try put back the cursor.
-  if M.winid_enter[tabid_current].winid
-    and vim.api.nvim_win_is_valid(M.winid_enter[tabid_current].winid)
-    then
-    vim.api.nvim_set_current_win(M.winid_enter[tabid_current].winid)
-    M.winid_enter[tabid_current] = nil
-  end
+  -- NOTE: internals updates are now handled by autocmd.
 end
 
 
