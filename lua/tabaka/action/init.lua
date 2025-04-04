@@ -19,12 +19,12 @@ function M.dispatch_command(fargs)
 
   if -- the command is `:Baka`.
     argc == 0 then
-    -- WARN: we assume that action `toggle_window` should be defined by every filetype.
     M.run_with_context(
       vim.tbl_filter(function (action)
         return action.name == 'toggle_window'
       end, actions)[1],
-      'action'
+      'action',
+      'K'
     )
     return
   end
