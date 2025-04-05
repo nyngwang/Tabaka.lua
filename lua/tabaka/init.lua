@@ -9,16 +9,18 @@ tabaka can provide the following functionalities:
 - [v] for each tabpage, a user can {link} {one} file on each of the {top,bottom,left,right}-side
   - [v] to {link} a file to one of the sides, open the file in the tabaka window on that side
   - [v] the linked file will be shown when the tabaka window is toggled on that side
-  - [ ] the {create} command is available inside the tabaka window
-    - [ ] to create a file from {bundled} template
-    - [ ] to create a file from {user-provided} template
-- [ ] for each tabpage, only {filetype} commands of the linked file will be available
-  - [ ] if there is no tabaka window, only the {toggle} command will be available
-- [ ] for each tabpage, everything still work after {tabpage-reordering,session-restoring}
+- [ ] for each tabpage, only necessary commands will be available
+  - [ ] the {filetype} commands are only available when the tabaka window shows a {filetype} file
+  - [ ] the {common} commands are the only available ones before the tabaka window is toggled
+    - [ ] the {toggle} command is available anytime, anywhere
+    - [ ] the {create} command is available inside the tabaka window
+      - [ ] it can create a file from {bundled} templates
+      - [ ] it can create a file from {user} templates
+- [ ] for each tabpage, everything still works after {tabpage-reordering,session-restoring}
   - close a tabpage will not delete those linked files, but no way to restore the state
 
 tabaka should follow these invariants:
-- it should not create/delete any markdown file implicitly
+- [ ] it should not create/delete any markdown file implicitly
 
 tabaka can be customized by the following properties:
 - [ ] a user can define the width/height of the tabaka window on each side of a tabpage
