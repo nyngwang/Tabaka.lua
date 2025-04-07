@@ -5,6 +5,7 @@ local M = {
   winid_tabaka = {},
   winid_enter = {},
   bufname_last = {}, -- NOTE: a session-restore plugin might set this directly.
+  HJKL_last = {},
 }
 
 
@@ -44,10 +45,8 @@ function M.create_window_tabaka(HJKL)
   end
 
   local tabid_current = vim.api.nvim_get_current_tabpage()
-  M.winid_enter[tabid_current] = {
-    winid = vim.api.nvim_get_current_win(),
-    HJKL = HJKL,
-  }
+  M.winid_enter[tabid_current] = vim.api.nvim_get_current_win()
+  M.HJKL_last[tabid_current] = HJKL
 
   vim.cmd(([[
     rightbelow vsplit
@@ -55,9 +54,10 @@ function M.create_window_tabaka(HJKL)
   ]]):format(HJKL))
 
   if -- didn't create for some reason.
-    vim.api.nvim_get_current_win() == M.winid_enter[tabid_current].winid
+    vim.api.nvim_get_current_win() == M.winid_enter[tabid_current]
     then
     M.winid_enter[tabid_current] = nil
+    M.HJKL_last[tabid_current] = nil
     print('Tabaka: window splitting command failed.')
     return
   end

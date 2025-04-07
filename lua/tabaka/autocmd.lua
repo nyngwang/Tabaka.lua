@@ -21,10 +21,10 @@ function M.detect_WinClosed_tabaka()
       if not W.bufname_last[tabid_current] then
         W.bufname_last[tabid_current] = {}
       end
-      W.bufname_last[tabid_current][W.winid_enter[tabid_current].HJKL] = bufname_last
+      W.bufname_last[tabid_current][W.HJKL_last[tabid_current]] = bufname_last
 
-      if vim.api.nvim_win_is_valid(W.winid_enter[tabid_current].winid) then
-        vim.api.nvim_set_current_win(W.winid_enter[tabid_current].winid)
+      if vim.api.nvim_win_is_valid(W.winid_enter[tabid_current]) then
+        vim.api.nvim_set_current_win(W.winid_enter[tabid_current])
       end
 
       W.winid_tabaka[tabid_current] = nil
