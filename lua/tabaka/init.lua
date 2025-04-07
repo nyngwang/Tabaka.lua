@@ -29,10 +29,13 @@ tabaka can be customized by the following properties:
 END OF PLUGIN PLAN
 ]]
 local L = require('tabaka.cmdline')
+local S = require('tabaka.config')
 local M = {}
 
 
 function M.setup(opts)
+  S.setup_opts = opts
+
   -- create user commands after setup.
   L.create_user_commands()
 end
