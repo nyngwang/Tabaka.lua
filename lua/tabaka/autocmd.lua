@@ -1,3 +1,5 @@
+local U = require('tabaka.utils')
+local P = require('tabaka.filepath')
 local C = require('tabaka.defaults').constants
 local W = require('tabaka.window')
 local M = {}
@@ -34,8 +36,65 @@ function M.detect_WinClosed_tabaka()
 end
 
 
+function M.restore_sides()
+  vim.api.nvim_create_autocmd({ 'VimLeavePre' }, {
+    group = augroup_project,
+    pattern = '*',
+    callback = function ()
+      if vim.fn.argc() ~= 0 -- git or `nvim ...`.
+        or vim.v.dying > 0 then
+        return
+      end
+      local fp = io.open(
+        table.concat({
+          P.get_filepath_folder_tabaka_project_user(),
+          'storage.json'
+        }, P.sep),
+        'w+'
+      )
+      if not fp then return end
+
+      local storage = {}
+      for tabid, v in ipairs(W.bufname_last) do
+        local tabnr = vim.api.nvim_tabpage_get_number(tabid)
+        storage[tostring(tabnr)] = v
+      end
+      fp:write(U.prettify_table(vim.json.encode(storage)))
+      fp:close()
+    end
+  })
+  vim.api.nvim_create_autocmd({ 'VimEnter' }, {
+    group = augroup_project,
+    pattern = '*',
+    callback = function ()
+      if -- git or `nvim ...`.
+        vim.fn.argc() ~= 0 then
+        return
+      end
+      local fp = io.open(
+        table.concat({
+          P.get_filepath_folder_tabaka_project_user(),
+          'storage.json'
+        }, P.sep),
+        'r'
+      )
+      if not fp then return end
+
+      local data = vim.json.decode(fp:read('*a'))
+      fp:close()
+      local storage = {}
+      for str_tabnr, v in pairs(data) do
+        storage[tonumber(str_tabnr)] = v
+      end
+      W.bufname_last = storage
+    end
+  })
+end
+
+
 function M.create_user_autocmds()
   M.detect_WinClosed_tabaka()
+  M.restore_sides()
 end
 
 
