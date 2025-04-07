@@ -72,6 +72,8 @@ function M.create_window_tabaka(HJKL)
     local bufnr_last = vim.fn.bufadd(M.bufname_last[tabid_current][HJKL])
     vim.fn.bufload(bufnr_last)
     vim.api.nvim_win_set_buf(winid_tabaka, bufnr_last)
+  else -- otherwise, open a [No Name]-buffer in the tabaka window.
+    vim.cmd('enew')
   end
 
   -- tabaka window customization.
