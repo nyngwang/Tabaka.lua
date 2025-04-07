@@ -45,7 +45,7 @@ local function Proxy(
         if type(surface[k]) == 'function' then
           -- special case: (fn, [fn,...]).
           if type(fallback[k][1]) == 'function' then
-            return Proxy({ surface }, fallback[k])
+            return Proxy({ surface[k] }, fallback[k])
           end
         end
         -- pass down, look up.
