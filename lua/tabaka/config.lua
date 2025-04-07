@@ -4,12 +4,12 @@ local M = {
 }
 
 
-local function Proxy(surface, fallback)
-
+local function Proxy(
+  surface,
+  fallback -- assert it's a table.
+)
   return setmetatable({}, {
     __index = function (t, k)
-      -- assert fallback is a table.
-
       if k == 'for_all' then
         local fns_fallback = { __on_internal = 'for_all' }
         for _, v in ipairs(fallback) do
