@@ -1,12 +1,12 @@
 local C = require('tabaka.defaults').constants
 local P = require('tabaka.filepath')
 local A = require('tabaka.autocmd')
+local S = require('tabaka.config')
 local M = {
   winid_tabaka = {},
   winid_enter = {},
   bufname_last = {}, -- NOTE: a session-restore plugin might set this directly.
 }
-local opts = require('tabaka.config').get_opts()
 
 
 function M.get_winid_tabaka()
@@ -86,7 +86,7 @@ function M.create_window_tabaka(HJKL)
   A.detect_colon_q(M)
 
   -- tabaka window customization.
-  opts.callback.on_open.for_all({
+  S.get_opts().callback.on_open.for_all({
     winid = winid_tabaka,
     HJKL = HJKL,
   })
