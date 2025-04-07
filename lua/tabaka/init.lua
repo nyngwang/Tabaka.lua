@@ -29,6 +29,7 @@ END OF PLUGIN PLAN
 ]]
 local L = require('tabaka.cmdline')
 local S = require('tabaka.config')
+local A = require('tabaka.autocmd')
 local M = {}
 
 
@@ -37,6 +38,7 @@ function M.setup(opts)
 
   -- create user commands after setup.
   L.create_user_commands()
+  A.detect_colon_q()
 end
 
 

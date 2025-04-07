@@ -1,6 +1,5 @@
 local C = require('tabaka.defaults').constants
 local P = require('tabaka.filepath')
-local A = require('tabaka.autocmd')
 local S = require('tabaka.config')
 local M = {
   winid_tabaka = {},
@@ -22,13 +21,6 @@ end
 
 
 function M.close_window_tabaka(winid_tabaka)
-  if -- the other program somehow by-pass the `:q`-autocmd.
-    not vim.api.nvim_win_is_valid(winid_tabaka) then
-    vim.cmd(([[
-      doau %s %s
-    ]]):format(C.NAME_PROJECT, 'WinClosed'))
-    return
-  end
 
   vim.api.nvim_win_close(winid_tabaka, false)
 
@@ -81,9 +73,6 @@ function M.create_window_tabaka(HJKL)
     vim.fn.bufload(bufnr_last)
     vim.api.nvim_win_set_buf(winid_tabaka, bufnr_last)
   end
-
-  -- create an autocmd to detect `:q` without `M.close_window_tabaka`.
-  A.detect_colon_q(M)
 
   -- tabaka window customization.
   S.get_opts().callback.on_open.for_all({
