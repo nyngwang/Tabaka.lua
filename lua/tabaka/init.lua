@@ -9,11 +9,11 @@ tabaka can provide the following functionalities:
 - [v] for each tabpage, a user can {link} {one} file on each of the {top,bottom,left,right}-side
   - [v] to {link} a file to one of the sides, open the file in the tabaka window on that side
   - [v] the linked file will be shown when the tabaka window is toggled on that side
-- [ ] for each tabpage, only necessary commands will be available
+- [v] for each tabpage, only necessary commands will be available
   - [v] the {common} commands are available regardless of a {filetype} file being shown or not
     - [v] the {toggle} command is available anywhere, anytime
-  - [ ] the {filetype} commands are available when the tabaka window shows a {filetype} file
-    - [ ] the {filetype-create} command is an exception; it is available when the tabaka window is shown
+  - [v] the {filetype} commands are available when the tabaka window shows a {filetype} file
+    - [v] the {filetype-create} command is an exception; it is available when the tabaka window is shown
       - [ ] it can create a file from {bundled} templates
       - [ ] it can create a file from {user} templates
 - [ ] for each tabpage, everything still works after {tabpage-reordering,session-restoring}
