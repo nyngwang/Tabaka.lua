@@ -55,9 +55,8 @@ function M.restore_sides()
       if not fp then return end
 
       local storage = {}
-      for tabid, v in ipairs(W.bufname_last) do
-        local tabnr = vim.api.nvim_tabpage_get_number(tabid)
-        storage[tostring(tabnr)] = v
+      for tabnr, tabid in ipairs(vim.api.nvim_list_tabpages()) do
+        storage[tostring(tabnr)] = W.bufname_last[tabid]
       end
       fp:write(U.prettify_table(vim.json.encode(storage)))
       fp:close()
