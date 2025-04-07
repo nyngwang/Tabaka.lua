@@ -38,7 +38,7 @@ function M.setup(opts)
 
   -- create user commands after setup.
   L.create_user_commands()
-  A.detect_colon_q()
+  A.create_user_autocmds()
 end
 
 

@@ -4,7 +4,7 @@ local M = {}
 local augroup_project = vim.api.nvim_create_augroup(C.NAME_PROJECT, { clear = true })
 
 
-function M.detect_colon_q()
+function M.detect_WinClosed_tabaka()
   vim.api.nvim_create_autocmd({ 'WinClosed' }, {
     group = augroup_project,
     callback = function (ev)
@@ -31,6 +31,11 @@ function M.detect_colon_q()
       W.winid_enter[tabid_current] = nil
     end,
   })
+end
+
+
+function M.create_user_autocmds()
+  M.detect_WinClosed_tabaka()
 end
 
 
