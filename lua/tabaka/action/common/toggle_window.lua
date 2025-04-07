@@ -3,7 +3,7 @@ local W = require('tabaka.window')
 
 return {
   function (args)
-    local HJKL = args[1]
+    local HJKL = args[1] or W.HJKL_last[vim.api.nvim_get_current_tabpage()] or 'K'
     if -- already presented in the current tabpage.
       W.get_winid_tabaka()[1]
       then -- try close it.
