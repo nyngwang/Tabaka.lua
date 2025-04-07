@@ -16,7 +16,7 @@ tabaka can provide the following functionalities:
     - [v] the {filetype-create} command is an exception; it is available when the tabaka window is shown
       - [ ] it can create a file from {bundled} templates
       - [ ] it can create a file from {user} templates
-- [ ] for each tabpage, everything still works after {tabpage-reordering,session-restoring}
+- [v] for each tabpage, everything still works after {tabpage-reordering,session-restoring}
   - close a tabpage will not delete those linked files, but no way to restore the state
 
 tabaka should follow these invariants:
