@@ -6,6 +6,7 @@ local M = {
   winid_enter = {},
   bufname_last = {}, -- NOTE: a session-restore plugin might set this directly.
 }
+local opts = require('tabaka.config').get_opts()
 
 
 function M.get_winid_tabaka()
@@ -83,6 +84,13 @@ function M.create_window_tabaka(HJKL)
 
   -- create an autocmd to detect `:q` without `M.close_window_tabaka`.
   A.detect_colon_q(M)
+
+  -- tabaka window customization.
+  opts.callback.on_open.for_all({
+    winid = winid_tabaka,
+    HJKL = HJKL,
+  })
+
   return true, winid_tabaka
 end
 
