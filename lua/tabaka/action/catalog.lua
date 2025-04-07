@@ -10,12 +10,7 @@ function M.__register_modname(modname)
 end
 
 
-function M.get_current_filetype()
-  -- TODO:
-  -- Internally, we use the value returned from this function as
-  -- the default value for the first index of `M.action` when the value
-  -- is missing in the context. In the future, we can provide a command
-  -- to change the return value, and thus swap the entire set of commands.
+function M.get_filetype_buf_tabaka()
   if W.get_winid_tabaka()[1] then
     local bufnr_win_tabaka = vim.api.nvim_win_get_buf(W.get_winid_tabaka()[2])
     local filetype = vim.api.nvim_get_option_value('filetype', { buf = bufnr_win_tabaka })
@@ -40,7 +35,7 @@ function M.get_all_actions(pattern_filetype)
   end
 
   if not pattern_filetype then
-    pattern_filetype = M.get_current_filetype()
+    pattern_filetype = M.get_filetype_buf_tabaka()
   end
 
   actions = vim.tbl_filter(function (action)
