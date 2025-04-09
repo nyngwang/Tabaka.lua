@@ -1,4 +1,7 @@
-if vim.fn.has("nvim-0.7") == 0 then
+if vim.version().minor < 7 then
+  vim.api.nvim_echo({
+    { 'Tabaka.lua: requires nvim 0.7 or higher.' },
+  }, true, { err=true })
   return
 end
 
